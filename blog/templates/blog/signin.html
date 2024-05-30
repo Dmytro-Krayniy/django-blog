@@ -1,0 +1,36 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <section class="my-registration-form">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <!--    ЭТО ХЛЕБНЫЕ КРОШКИ -->
+                    <nav aria-label="breadcrumb" class="my-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Форма авторизации</li>
+                        </ol>
+                    </nav>
+
+                    <div class="row justify-content-center">
+                        <div class="col-6">
+                            <p class="lead">Пожалуйста, укажите логин и пароль</p>
+                            <form>
+                                <div class="mb-3">
+                                    <label for="inputUsername" class="form-label visually-hidden">Имя пользователя</label>
+                                    <input type="username" class="form-control" id="inputUsername" aria-describedby="userName" placeholder="Имя пользователя">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="inputPassword" class="form-label visually-hidden">Пароль</label>
+                                    <input type="password" class="form-control" id="inputPassword" placeholder="Пароль">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Войти</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

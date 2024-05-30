@@ -1,0 +1,31 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<section class="my-carousel">
+    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active" style="background-color: #343a40!important">
+                <div class="carousel-caption d-none d-md-block">
+                    <h1>Спасибо!</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="my-contact-form">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <!--    ЭТО ХЛЕБНЫЕ КРОШКИ -->
+                <nav aria-label="breadcrumb" class="my-4">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Форма обратной связи</li>
+                    </ol>
+                </nav>
+                <p class="lead">Ваше письмо отправлено! Спасибо.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
