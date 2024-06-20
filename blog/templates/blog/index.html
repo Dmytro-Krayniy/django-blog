@@ -1,64 +1,32 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 
-{% block content %}
-  <section class="my-carousel">
-      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src={% static 'blog/images/first_img.jpg' %} class="d-block w-75 mx-auto" alt="Первая картинка">
-            <div class="carousel-caption d-none d-md-block">
-              <h5>Это описание первого слайда</h5>
-              <p>Тут можно писать все что угодно</p>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <img src={% static 'blog/images/second_img.jpg' %} class="d-block w-75 mx-auto" alt="Вторая картинка">
-            <div class="carousel-caption d-none d-md-block">
-              <h5>Это описание второго слайда</h5>
-              <p>Тут можно писать все что угодно</p>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <img src={% static 'blog/images/third_img.png' %} class="d-block w-75 mx-auto" alt="Третья картинка">
-            <div class="carousel-caption d-none d-md-block">
-              <h5>Это описание третьего слайда</h5>
-              <p>Тут можно писать все что угодно</p>
-            </div>
-          </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
-  </section>
+{% block title %}Main page{% endblock %}
 
+{% block header %}
+  {% include 'blog/includes/slider.html' %}
+{% endblock %}
+
+{% block content %}
   <section class="all-posts" style="background-color: antiquewhite">
   <div class="container mb-3">
     <h1 class="my-4 text-center">Последние записи блога</h1>
     <div class="row">
-    {% for post in posts %}
+    {% for post in page_obj %}
         <div class="col-md-4">
         <div class="card mb-4 shadow-sm">
-          <img src="/media/{{ post.img_url }}" alt="{{ post.img_url }}" class="card-img-top">
+          <img src="{{ post.image.url }}" alt="{{ post.image.url }}" class="card-img-top" style="height:250px;">
           <div class="card-body">
-            <h4 class="card-title">{{ post.title }}</h4>
-            <p class="card-text">{{ post.content }}</p>
+            <h4 class="card-title">{{ post.h1 }}</h4>
+              <p class="card-text">{{ post.description|safe|truncatewords:50 }}</p>
+            {% for tag in post.tag.all %}
+              <a href="{% url 'tag_list' tag.slug%}" class="badge bg-info text-dark mb-2">#{{ tag }}</a>
+            {% endfor %}
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
-                  <a href="post/{{ post.slug }}/" class="btn btn-sm btn-outline-secondary">Подробнее</a>
+                  <a href="{% url 'post_detail' slug=post.url %}" class="btn btn-sm btn-outline-secondary">Подробнее</a>
               </div>
-              <small class="text-muted">{{ post.updated }}</small>
+              <small class="text-muted">{{ post.created_at | date:"d M Y"}}</small>
             </div>
           </div>
         </div>
@@ -70,19 +38,5 @@
 {% endblock %}
 
 {% block paginator %}
-  <section class="my-pagination">
-      <nav aria-label="Paginate me">
-        <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1">Предыдущая</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">Следующая</a>
-            </li>
-        </ul>
-      </nav>
-  </section>
+  {% include 'blog/includes/paginator.html' %}
 {% endblock %}

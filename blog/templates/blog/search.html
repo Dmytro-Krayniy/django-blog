@@ -1,20 +1,25 @@
 {% extends 'blog/base.html' %}
 
-{% block content %}
-    <section class="my-carousel">
-        <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active" style="background-color: #343a40!important">
-                <div class="carousel-caption d-none d-md-block">
-                    <form action="" class="my-2 my-lg-0">
-                        <input type="text" class="form-control" placeholder="Поиск" aria-label="Поиск">
-                        <button class="btn btn-outline-success mt-3" type="submit">Поиск</button>
-                    </form>
-                </div>
+{% block title %}Поиск{% endblock %}
+
+{% block header %}
+<section class="my-carousel">
+  <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active" style="background-color: #343a40!important">
+            <div class="carousel-caption d-none d-md-block">
+                <form action="{% url 'search_results' %}" method='get' class="my-2 my-lg-0">
+                    <input name="q" type="text" class="form-control" placeholder="Поиск" aria-label="Поиск">
+                    <button class="btn btn-outline-success mt-3" type="submit">Поиск</button>
+                </form>
             </div>
         </div>
-        </div>
-    </section>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
     <section class="my-post-detail">
         <div class="container">
             <div class="row">
@@ -23,20 +28,16 @@
                     <!--    ЭТО ХЛЕБНЫЕ КРОШКИ -->
                     <nav aria-label="breadcrumb" class="my-4">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Главная</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Поиск</li>
                         </ol>
                     </nav>
-                    <p class="lead">Найдено записей: 3</p>
-                    <a href=""><h2>Заголовок поста 1</h2></a>
-                    <p>Это красткое описание поста. Это красткое описание поста. Это красткое описание поста.</p>
-                    <hr>
-                    <a href=""><h2>Заголовок поста 2</h2></a>
-                    <p>Это красткое описание поста. Это красткое описание поста. Это красткое описание поста.</p>
-                    <hr>
-                    <a href=""><h2>Заголовок поста 3</h2></a>
-                    <p>Это красткое описание поста. Это красткое описание поста. Это красткое описание поста.</p>
-                    <hr>
+                    <p class="lead">Найдено записей: {{ page_obj.paginator.count }}</p>
+                    {% for post in page_obj %}
+                        <a href="{% url 'post_detail' post.url %}"><h2>{{ post.h1 }}</h2></a>
+                        <p>{{ post.description|safe }}</p>
+                        <hr>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -44,19 +45,5 @@
 {% endblock %}
 
 {% block paginator %}
-    <section class="my-pagination">
-        <nav aria-label="Paginate me">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Предыдущая</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Следующая</a>
-                </li>
-            </ul>
-        </nav>
-    </section>
+  {% include 'blog/includes/paginator.html' %}
 {% endblock %}

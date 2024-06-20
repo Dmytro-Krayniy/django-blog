@@ -1,17 +1,20 @@
 from django.conf.urls.static import static
+from django.contrib.auth.views import LogoutView
 from django.urls import path
 
 from blog import views
 from myblog import settings
 
 urlpatterns = [
-    path('', views.index, name='home'),
-    path('post/<slug:slug>/', views.show_post, name='show_post'),
-    path('contact/', views.contact, name='contact'),
-    path('contact/thanks/', views.thanks, name='thanks'),
-    path('signup/', views.signup, name='signup'),
-    path('signin/', views.signin, name='signin'),
-    path('search/', views.search, name='search'),
+    path('', views.MainPage.as_view(), name='home'),
+    path('post/<slug:slug>/', views.PostDetailView.as_view(), name='post_detail'),
+    path('contact/', views.ContactView.as_view(), name='contact'),
+    path('contact/success/', views.thanks, name='success'),
+    path('signup/', views.SignUpView.as_view(), name='signup'),
+    path('signin/', views.SignInView.as_view(), name='signin'),
+    path('signout/', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='signout'),
+    path('search/', views.SearchResultsView.as_view(), name='search_results'),
+    path('tag/<slug:tag_slug>/', views.TagList.as_view(), name='tag_list'),
 ]
 
 if settings.DEBUG:

@@ -1,5 +1,7 @@
 {% extends 'blog/base.html' %}
 
+{% block title %}Authorization{% endblock %}
+
 {% block content %}
     <section class="my-registration-form">
         <div class="container">
@@ -8,23 +10,30 @@
                     <!--    ЭТО ХЛЕБНЫЕ КРОШКИ -->
                     <nav aria-label="breadcrumb" class="my-4">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'home'%}">Главная</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Форма авторизации</li>
                         </ol>
                     </nav>
 
                     <div class="row justify-content-center">
                         <div class="col-6">
-                            <p class="lead">Пожалуйста, укажите логин и пароль</p>
-                            <form>
-                                <div class="mb-3">
-                                    <label for="inputUsername" class="form-label visually-hidden">Имя пользователя</label>
-                                    <input type="username" class="form-control" id="inputUsername" aria-describedby="userName" placeholder="Имя пользователя">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="inputPassword" class="form-label visually-hidden">Пароль</label>
-                                    <input type="password" class="form-control" id="inputPassword" placeholder="Пароль">
-                                </div>
+                            <p class="lead">Для входа укажите логин и пароль</p>
+                            <form method="post" action="{% url 'signin' %}">
+                                {% csrf_token %}
+                                {% if form.errors %}
+                                  {% for error in form.non_field_errors %}
+                                    <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                                  {% endfor %}
+                                {% endif %}
+                                {% for field in form %}
+                                  <div class="mb-3">
+                                      {% for error in field.errors%}
+                                        <div class="alert alert-danger"><strong>{{ error|escape }}</strong></div>
+                                      {% endfor %}
+                                      <label class="form-label visually-hidden" for="{{ field.id_for_label }}">{{field.label}}</label>
+                                      {{ field }}
+                                  </div>
+                                {% endfor %}
                                 <button type="submit" class="btn btn-primary">Войти</button>
                             </form>
                         </div>

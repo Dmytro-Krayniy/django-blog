@@ -1,5 +1,11 @@
 {% extends 'blog/base.html' %}
 
+{% block title %}Feedback{% endblock%}
+
+{% block header %}
+    {% include 'blog/includes/header.html' %}
+{% endblock %}
+
 {% block content %}
   <section class="my-contact-form">
     <div class="container">
@@ -8,25 +14,40 @@
                 <!--    ЭТО ХЛЕБНЫЕ КРОШКИ -->
                 <nav aria-label="breadcrumb" class="my-4">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Главная</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Форма обратной связи</li>
                     </ol>
                 </nav>
                 <div class="row justify-content-center">
                     <div class="col-6">
                         <p class="lead">Чтобы связаться со мной заполните форму обратной связи</p>
-                        <form name="contact-form" action="">
+                        <form method='post' name="contact-form" action="{% url 'contact' %}">
+                            {% csrf_token %}
+                            {% if form.errors %}
+                                {% for error in form.non_field_errors %}
+                                    <div class="alert alert-danger">
+                                        <strong>{{ error|escape }}</strong>
+                                    </div
+                                {% endfor %}
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <div class="alert alert-danger">
+                                            <strong>{{ error|escape }}</strong>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="md-form mb-0">
                                         <label for="name" class="visually-hidden">Ваше имя</label>
-                                        <input type="text" id="name" class="form-control" placeholder="Ваше имя">
+                                        {{ form.name }}
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="md-form mb-0">
                                         <label for="email" class="visually-hidden">Ваша почта</label>
-                                        <input type="text" id="email" class="form-control" placeholder="Ваша почта">
+                                        {{ form.email }}
                                     </div>
                                 </div>
                             </div>
@@ -35,23 +56,22 @@
                                 <div class="col-md-12">
                                     <div class="md-form mb-0">
                                         <label for="subject" class="visually-hidden">Тема</label>
-                                        <input type="text" id="subject" class="form-control" placeholder="Тема">
+                                        {{ form.subject }}
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row mt-3">
                                 <div class="col-md-12">
                                     <div class="md-form">
                                         <label for="message" class="visually-hidden">Ваше сообщение</label>
-                                        <textarea type="text" id="message" rows="2" class="form-control md-textarea" placeholder="Ваше сообщение"></textarea>
+                                        {{ form.message }}
                                     </div>
                                 </div>
                             </div>
+                            <div class="text-center text-md-start my-3">
+                                <button class="btn btn-primary" type="submit">Отправить</button>
+                            </div>
                         </form>
-                        <div class="text-center text-md-start my-3">
-                            <button class="btn btn-primary" type="submit">Отправить</button>
-                        </div>
                     </div>
                 </div>
             </div>
